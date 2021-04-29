@@ -88,7 +88,7 @@ public:
       transformPoints(points, curr_trans, transformed_points);
 
       //************************************************ Find correspondence between points of the current and previous
-      //frames  *************** ////
+      // frames  *************** ////
       // **************************************************** getCorrespondence() function is the fast search function
       // and getNaiveCorrespondence function is the naive search option **** ////
 
