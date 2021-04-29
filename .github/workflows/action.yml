@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build Package:
+  build:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -22,7 +22,7 @@ jobs:
           package-name: safety
           target-ros1-distro: melodic
           
-  ROS Style Guide C++ Format:
+  clang-format:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
