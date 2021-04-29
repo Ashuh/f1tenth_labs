@@ -1,0 +1,31 @@
+name: ROS Melodic CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  Build Package:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: ros-tooling/setup-ros@v0.1
+        with:
+          required-ros-distributions: melodic
+      - uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: safety
+          target-ros1-distro: melodic
+          
+  ROS Style Guide C++ Format:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - uses: AutoModality/action-ros-clang-format@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
