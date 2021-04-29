@@ -1,7 +1,7 @@
 #include "scan_matching_skeleton/visualization.h"
 
-PointVisualizer::PointVisualizer(ros::Publisher& pub, string ns, string frame_id) : pub(pub), ns(ns),
-      frame_id(frame_id) {
+PointVisualizer::PointVisualizer(ros::Publisher& pub, string ns, string frame_id) : pub(pub), ns(ns), frame_id(frame_id)
+{
   dots.header.frame_id = frame_id;
   dots.ns = ns;
   dots.action = visualization_msgs::Marker::ADD;
@@ -12,14 +12,17 @@ PointVisualizer::PointVisualizer(ros::Publisher& pub, string ns, string frame_id
   ++num_visuals;
 }
 
-void PointVisualizer::addPoints(vector<Point>& points, std_msgs::ColorRGBA color) {
-  for (Point p : points) {
+void PointVisualizer::addPoints(vector<Point>& points, std_msgs::ColorRGBA color)
+{
+  for (Point p : points)
+  {
     dots.points.push_back(p.getPoint());
     dots.colors.push_back(color);
   }
 }
 
-void PointVisualizer::publishPoints() {
+void PointVisualizer::publishPoints()
+{
   dots.header.stamp = ros::Time::now();
   pub.publish(dots);
   ROS_INFO("published dots");
@@ -27,8 +30,9 @@ void PointVisualizer::publishPoints() {
   dots.colors.clear();
 }
 
-CorrespondenceVisualizer::CorrespondenceVisualizer(ros::Publisher& pub, string ns, string frame_id) : pub(pub), ns(ns),
-      frame_id(frame_id) {
+CorrespondenceVisualizer::CorrespondenceVisualizer(ros::Publisher& pub, string ns, string frame_id)
+  : pub(pub), ns(ns), frame_id(frame_id)
+{
   line_list.header.frame_id = frame_id;
   line_list.ns = ns;
   line_list.action = visualization_msgs::Marker::ADD;
@@ -39,10 +43,15 @@ CorrespondenceVisualizer::CorrespondenceVisualizer(ros::Publisher& pub, string n
   num_visuals++;
 }
 
-void CorrespondenceVisualizer::addCorrespondences(vector<Correspondence> correspondences) {
+void CorrespondenceVisualizer::addCorrespondences(vector<Correspondence> correspondences)
+{
   std_msgs::ColorRGBA col;
-  col.r = 1.0; col.b = 0.0; col.g = 0.0; col.a = 1.0;
-  for (Correspondence c : correspondences) {
+  col.r = 1.0;
+  col.b = 0.0;
+  col.g = 0.0;
+  col.a = 1.0;
+  for (Correspondence c : correspondences)
+  {
     line_list.points.push_back(c.p->getPoint());
     line_list.colors.push_back(col);
     line_list.points.push_back(c.getPiGeo());
@@ -50,7 +59,8 @@ void CorrespondenceVisualizer::addCorrespondences(vector<Correspondence> corresp
   }
 }
 
-void CorrespondenceVisualizer::publishCorrespondences() {
+void CorrespondenceVisualizer::publishCorrespondences()
+{
   line_list.header.stamp = ros::Time::now();
   pub.publish(line_list);
   ROS_INFO("published dots");
