@@ -15,7 +15,9 @@
 #include <geometry_msgs/Point.h>
 #include <ackermann_msgs/AckermannDriveStamped.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <nav_msgs/Path.h>
 #include <tf/transform_listener.h>
+#include <visualization_msgs/MarkerArray.h>
 
 // standard
 #include <math.h>
@@ -50,15 +52,21 @@ private:
   ros::NodeHandle nh_;
 
   // ros pub/sub
-  // TODO: add the publishers and subscribers you need
+  ros::Publisher grid_pub_;
+  ros::Publisher path_pub_;
+  ros::Publisher viz_pub_;
 
   ros::Subscriber pf_sub_;
   ros::Subscriber scan_sub_;
+  ros::Subscriber global_path_sub_;
 
   // tf stuff
   tf::TransformListener listener;
 
-  // TODO: create RRT params
+  nav_msgs::OccupancyGrid occ_grid_;
+  nav_msgs::Path global_path_;
+
+  int max_iter_ = 10000;
 
   // random generator, use this
   std::mt19937 gen;
@@ -70,6 +78,7 @@ private:
   void pf_callback(const geometry_msgs::PoseStamped::ConstPtr& pose_msg);
   // updates occupancy grid
   void scan_callback(const sensor_msgs::LaserScan::ConstPtr& scan_msg);
+  void path_callback(const nav_msgs::Path::ConstPtr& path_msg);
 
   // RRT methods
   std::vector<double> sample();
@@ -82,4 +91,7 @@ private:
   double cost(std::vector<Node>& tree, Node& node);
   double line_cost(Node& n1, Node& n2);
   std::vector<int> near(std::vector<Node>& tree, Node& node);
+
+  geometry_msgs::PointStamped get_goal(const geometry_msgs::Point current_pos);
+  void visualize(std::vector<Node> const& tree);
 };
